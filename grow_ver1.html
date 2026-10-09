@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8ff">
+  <title>Grow. | 今日の小さな一歩</title>
+  <style>
+    :root{--ink:#17243b;--muted:#67738a;--line:#e5eaf3;--paper:#ffffff;--bg:#f4f7fc;--blue:#3b82f6;--blue-dark:#245fc0;--mint:#daf7e7;--green:#178451;--orange:#ffb04a;--purple:#8054ee;--shadow:0 10px 28px rgba(30,52,91,.08)}
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#eef4ff 0,#f7f9fd 270px,var(--bg) 100%);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);line-height:1.55}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{max-width:1080px;margin:auto;padding:24px 18px 44px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+    .brand{display:flex;align-items:center;gap:11px}
+    .logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#266be5,#52c5ab);display:grid;place-items:center;color:#fff;font-size:25px;font-weight:900;box-shadow:0 8px 18px rgba(59,130,246,.22)}
+    .brand-name{font-size:26px;letter-spacing:-1px;font-weight:850;line-height:1}.brand-sub{color:var(--muted);font-size:11px;margin-top:4px}
+    .date-pill{background:rgba(255,255,255,.8);border:1px solid #e3eaf7;padding:9px 13px;border-radius:999px;color:#475873;font-size:12px;white-space:nowrap}
+    .hero{position:relative;overflow:hidden;display:grid;grid-template-columns:1.4fr .6fr;gap:22px;background:linear-gradient(120deg,#1b3155,#2b5ca4 67%,#3e91b4);color:#fff;padding:30px;border-radius:28px;box-shadow:var(--shadow);margin-bottom:20px}
+    .hero:after{content:"";position:absolute;width:250px;height:250px;right:-35px;top:-100px;border:1px solid rgba(255,255,255,.2);border-radius:50%;box-shadow:0 0 0 25px rgba(255,255,255,.04),0 0 0 55px rgba(255,255,255,.035)}
+    .eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;color:#c8e6ff;font-weight:750}
+    h1{font-size:clamp(27px,4vw,40px);line-height:1.22;margin:9px 0 12px;letter-spacing:-1px}
+    .hero p{margin:0;color:#e0ecff;max-width:480px;font-size:14px}
+    .hero-note{align-self:center;justify-self:end;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:20px;text-align:center;min-width:165px;position:relative;z-index:1}
+    .hero-note .star{font-size:29px}.hero-note strong{display:block;font-size:22px;margin:3px 0}.hero-note span{font-size:11px;color:#d7e9ff}
+    .layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:20px;align-items:start}
+    .stack{display:grid;gap:20px}
+    .card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+    .section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}
+    .section-head h2{margin:0;font-size:18px;letter-spacing:-.3px}.tag{font-size:11px;background:#eef4ff;color:#3564a8;border-radius:999px;padding:5px 9px;font-weight:700}
+    .label{font-size:12px;font-weight:750;color:#475873;display:block;margin-bottom:7px}
+    .field{width:100%;border:1px solid #dbe3ef;border-radius:13px;padding:12px 13px;background:#fbfcff;color:var(--ink);outline:none}
+    .field:focus{border-color:#7da9f9;box-shadow:0 0 0 3px #e8f0ff}
+    .row-fields{display:grid;grid-template-columns:.75fr 1.25fr;gap:12px;margin-bottom:13px}
+    .btn{border:0;border-radius:13px;padding:12px 16px;font-weight:750;display:inline-flex;justify-content:center;align-items:center;gap:8px;transition:transform .15s,filter .15s}
+    .btn:hover{filter:brightness(.98);transform:translateY(-1px)}.btn:focus-visible{outline:3px solid #b7d1ff;outline-offset:2px}
+    .btn-primary{width:100%;background:var(--blue);color:#fff;box-shadow:0 7px 14px rgba(59,130,246,.17)}
+    .btn-success{background:#168653;color:white;flex:1}.btn-soft{background:#eef4ff;color:#285db3;flex:1}.btn-muted{background:#f1f4f8;color:#536076}
+    .hint{font-size:11px;color:#7b879b;margin:9px 0 0}
+    .today-goal{display:flex;align-items:flex-start;gap:12px;padding:14px;background:#f1f7ff;border:1px solid #e0ecff;border-radius:16px;margin-bottom:14px}
+    .goal-icon{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:#fff;font-size:20px;flex-shrink:0}
+    .goal-text small{display:block;color:#6480a8;font-size:11px;margin-bottom:2px}.goal-text strong{font-size:16px;overflow-wrap:anywhere}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .empty{padding:17px;border:1px dashed #d4deed;border-radius:15px;color:#778398;text-align:center;font-size:13px;background:#fafcff}
+    .notice{font-size:12px;color:#65748a;background:#f8faff;border-radius:12px;padding:11px 12px;margin-top:13px}
+    .hidden{display:none!important}
+    .reason-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:11px 0 13px}
+    .reason-option{position:relative}.reason-option input{position:absolute;opacity:0;pointer-events:none}
+    .reason-option span{display:block;border:1px solid #dce3ee;border-radius:12px;background:#fbfcff;padding:10px;text-align:center;color:#536178;font-size:12px;cursor:pointer}
+    .reason-option input:checked+span{border-color:#74a0ef;background:#edf4ff;color:#275bb0;font-weight:750}
+    .hint-box{padding:15px;border-radius:16px;background:#f2edff;border:1px solid #e4dbff;margin:13px 0;color:#4c397e}
+    .hint-box strong{display:block;margin-bottom:4px;font-size:13px}.hint-box p{font-size:13px;margin:0}
+    .tomorrow-row{display:grid;grid-template-columns:1fr auto;gap:8px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .stat{padding:15px 10px;border:1px solid var(--line);border-radius:16px;text-align:center;background:#fbfcff}
+    .stat .ico{font-size:19px}.stat strong{display:block;font-size:22px;margin:5px 0 1px}.stat span{font-size:10px;color:#718096}
+    .history-list{display:grid;gap:9px}
+    .history-item{display:flex;gap:10px;align-items:flex-start;border:1px solid #edf0f5;border-radius:14px;padding:12px}
+    .history-mark{width:32px;height:32px;border-radius:10px;background:#e8f9ef;display:grid;place-items:center;flex-shrink:0}.history-mark.no{background:#fff2de}
+    .history-copy{min-width:0;flex:1}.history-copy strong{font-size:13px;display:block;overflow-wrap:anywhere}.history-copy small{font-size:11px;color:#7a879b}.history-pts{font-size:11px;font-weight:800;color:#218357;white-space:nowrap}
+    .badge-row{display:flex;gap:10px;align-items:center;padding:12px;border-radius:14px;background:#fff9e8;border:1px solid #f5e8bd}.badge-medal{font-size:23px}.badge-row strong{display:block;font-size:13px}.badge-row small{color:#8f7a43;font-size:11px}
+    footer{text-align:center;color:#8590a1;font-size:11px;margin-top:24px}
+    .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1c2d48;color:white;padding:12px 18px;border-radius:999px;box-shadow:0 8px 28px rgba(0,0,0,.18);font-size:13px;z-index:10;max-width:calc(100% - 30px);text-align:center}
+    @media(max-width:760px){.app{padding:16px 12px 30px}.hero{grid-template-columns:1fr;padding:23px;border-radius:22px}.hero-note{justify-self:start;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 15px;min-width:0}.hero-note .star{font-size:22px}.hero-note strong{display:inline;font-size:18px}.hero-note span{display:block}.layout{grid-template-columns:1fr}.card{padding:18px}.row-fields{grid-template-columns:1fr}.date-pill{font-size:10px;padding:8px}.brand-name{font-size:23px}}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand"><div class="logo">G</div><div><div class="brand-name">Grow.</div><div class="brand-sub">昨日の自分より、少し成長。</div></div></div>
+      <div class="date-pill" id="dateLabel">今日の記録</div>
+    </header>
+
+    <section class="hero">
+      <div><div class="eyebrow">Small steps, real growth.</div><h1>今日の小さな一歩が、<br>未来の自分をつくる。</h1><p>大きな目標じゃなくていい。自分のペースで決めて、挑戦して、振り返ろう。</p></div>
+      <div class="hero-note"><div class="star">🌱</div><div><strong id="heroPoints">0 pt</strong><span>今までに集めたポイント</span></div></div>
+    </section>
+
+    <div class="layout">
+      <div class="stack">
+        <section class="card" aria-labelledby="goalHeading">
+          <div class="section-head"><h2 id="goalHeading">🎯 今日の目標</h2><span class="tag">STEP 1</span></div>
+          <div id="goalSetup">
+            <div class="row-fields">
+              <div><label class="label" for="category">カテゴリー</label><select class="field" id="category"><option>勉強</option><option>部活</option><option>生活</option><option>運動</option><option>趣味</option><option>その他</option></select></div>
+              <div><label class="label" for="goalInput">今日やってみること</label><input class="field" id="goalInput" maxlength="90" placeholder="例：英単語を5個覚える"></div>
+            </div>
+            <button class="btn btn-primary" id="saveGoal">今日の目標を決める <span>→</span></button>
+            <p class="hint">コツ：最初は「少し頑張ればできそう」なくらいでOK。</p>
+          </div>
+          <div id="goalActive" class="hidden">
+            <div class="today-goal"><div class="goal-icon" id="goalEmoji">📚</div><div class="goal-text"><small id="goalCategory">今日の目標</small><strong id="goalDisplay"></strong></div></div>
+            <div id="challengeActions" class="actions"><button class="btn btn-success" id="markDone">✓ 達成できた！</button><button class="btn btn-soft" id="markMissed">今日は難しかった</button></div>
+            <div id="resultPanel" class="hidden"></div>
+          </div>
+        </section>
+
+        <section class="card hidden" id="reflectionCard" aria-labelledby="reflectionHeading">
+          <div class="section-head"><h2 id="reflectionHeading">🪞 振り返り</h2><span class="tag">STEP 2</span></div>
+          <p style="margin:0;color:#68758b;font-size:13px">できなかった日も大丈夫。近い理由を選んで、明日の作戦を考えよう。</p>
+          <div class="reason-grid" id="reasonGrid">
+            <label class="reason-option"><input type="radio" name="reason" value="時間が足りなかった"><span>⏰ 時間が足りなかった</span></label>
+            <label class="reason-option"><input type="radio" name="reason" value="思ったより難しかった"><span>🧩 思ったより難しかった</span></label>
+            <label class="reason-option"><input type="radio" name="reason" value="忘れてしまった"><span>💭 忘れてしまった</span></label>
+            <label class="reason-option"><input type="radio" name="reason" value="予定や体調の都合"><span>🌦️ 予定・体調の都合</span></label>
+            <label class="reason-option" style="grid-column:1/-1"><input type="radio" name="reason" value="その他" ><span>✏️ その他</span></label>
+          </div>
+          <button class="btn btn-primary" id="makeHint">明日のヒントを見る</button>
+          <div id="hintArea" class="hidden">
+            <div class="hint-box"><strong>💡 明日のための小さなヒント</strong><p id="hintText"></p></div>
+            <label class="label" for="tomorrowInput">明日の目標（自分で決めよう）</label>
+            <div class="tomorrow-row"><input class="field" id="tomorrowInput" maxlength="90" placeholder="例：英単語を3個だけやる"><button class="btn btn-success" id="saveTomorrow">保存</button></div>
+            <p class="hint">AI連携前の試作品なので、今は理由に合わせた固定ヒントを表示するよ。</p>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="historyHeading">
+          <div class="section-head"><h2 id="historyHeading">📖 最近の成長記録</h2><span class="tag">MY LOG</span></div>
+          <div id="historyList" class="history-list"><div class="empty">今日の記録をつけると、ここに表示されるよ。</div></div>
+        </section>
+      </div>
+
+      <aside class="stack">
+        <section class="card" aria-labelledby="statsHeading">
+          <div class="section-head"><h2 id="statsHeading">📈 今の自分</h2><span class="tag">MY GROWTH</span></div>
+          <div class="stats">
+            <div class="stat"><div class="ico">⭐</div><strong id="pointsStat">0</strong><span>ポイント</span></div>
+            <div class="stat"><div class="ico">✅</div><strong id="doneStat">0</strong><span>達成した目標</span></div>
+            <div class="stat"><div class="ico">📝</div><strong id="recordStat">0</strong><span>記録した日</span></div>
+          </div>
+          <p class="notice">未達成でもポイントの没収はないよ。続けて記録することも成長の一部。</p>
+        </section>
+
+        <section class="card" aria-labelledby="badgeHeading">
+          <div class="section-head"><h2 id="badgeHeading">🏅 バッジ</h2><span class="tag">MILESTONES</span></div>
+          <div class="badge-row"><div class="badge-medal">🌱</div><div><strong>はじめの一歩</strong><small id="firstBadgeText">最初の記録をつけると獲得</small></div></div>
+          <div style="height:9px"></div>
+          <div class="badge-row" style="background:#f3f0ff;border-color:#e5ddff"><div class="badge-medal">✨</div><div><strong>コツコツ記録</strong><small id="recordBadgeText">5日分の記録で獲得</small></div></div>
+        </section>
+
+        <section class="card" aria-labelledby="rulesHeading">
+          <div class="section-head"><h2 id="rulesHeading">🧭 Grow.のルール</h2></div>
+          <div style="display:grid;gap:11px;font-size:13px;color:#59677f">
+            <div>💚 <strong>自分のペースでOK</strong><br><span style="font-size:12px">目標はいつでも変更できる。</span></div>
+            <div>🫶 <strong>失敗にペナルティなし</strong><br><span style="font-size:12px">ポイント没収や失敗ランキングはなし。</span></div>
+            <div>🔒 <strong>自分用の試作品</strong><br><span style="font-size:12px">この段階では友達への投稿やチャットはまだないよ。</span></div>
+          </div>
+        </section>
+      </aside>
+    </div>
+    <footer>Grow. Ver.1 試作品 · 記録はこのブラウザー内に保存されます</footer>
+  </main>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  const KEY = 'grow-ver1-prototype-v1';
+  const $ = (id) => document.getElementById(id);
+  const todayKey = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  };
+  const formatDate = (key) => {
+    const [y,m,d] = key.split('-').map(Number);
+    return `${y}年${m}月${d}日`;
+  };
+  const blankState = () => ({ goals: {}, logs: {}, points: 0 });
+  let state = loadState();
+  let toastTimer;
+
+  function loadState(){
+    try {
+      const saved = localStorage.getItem(KEY);
+      return saved ? { ...blankState(), ...JSON.parse(saved) } : blankState();
+    } catch (err) {
+      return blankState();
+    }
+  }
+  function saveState(){
+    try { localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch (err) { showToast('ブラウザーの保存が使えないようです。通常モードで開いてみてね。'); }
+  }
+  function showToast(message){
+    const el = $('toast'); el.textContent = message; el.classList.remove('hidden');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.add('hidden'), 2800);
+  }
+  const today = () => todayKey();
+  const categoryEmoji = (name) => ({'勉強':'📚','部活':'⚽','生活':'🌞','運動':'💪','趣味':'🎨','その他':'🌱'})[name] || '🌱';
+  function render(){
+    const key = today();
+    $('dateLabel').textContent = formatDate(key);
+    $('heroPoints').textContent = `${state.points} pt`;
+    $('pointsStat').textContent = state.points;
+    const logs = Object.values(state.logs);
+    $('doneStat').textContent = logs.filter(x => x.result === 'done').length;
+    $('recordStat').textContent = logs.length;
+    $('firstBadgeText').textContent = logs.length ? '獲得済み！最初の一歩を記録したね' : '最初の記録をつけると獲得';
+    $('recordBadgeText').textContent = logs.length >= 5 ? '獲得済み！コツコツ続けているね' : `あと${5-logs.length}日分の記録で獲得`;
+
+    const goal = state.goals[key];
+    $('goalSetup').classList.toggle('hidden', Boolean(goal));
+    $('goalActive').classList.toggle('hidden', !goal);
+    $('reflectionCard').classList.toggle('hidden', !(goal && state.logs[key] && state.logs[key].result === 'missed'));
+    if(goal){
+      $('goalEmoji').textContent = categoryEmoji(goal.category);
+      $('goalCategory').textContent = `${goal.category} · 今日の目標`;
+      $('goalDisplay').textContent = goal.text;
+      const log = state.logs[key];
+      const actions = $('challengeActions');
+      const panel = $('resultPanel');
+      if(log){
+        actions.classList.add('hidden'); panel.classList.remove('hidden');
+        if(log.result === 'done'){
+          panel.innerHTML = '<div class="notice" style="background:#e8faef;color:#187447;border:1px solid #c9efd7"><strong>🎉 今日の目標を達成！</strong><br>いい一歩だね。記録に追加したよ。</div>';
+        } else {
+          panel.innerHTML = '<div class="notice" style="background:#fff5e6;color:#895715;border:1px solid #f4dfbd"><strong>🌱 今日はここまででOK</strong><br>ポイントは減らないよ。振り返りから明日の作戦を考えよう。</div>';
+        }
+      } else {
+        actions.classList.remove('hidden'); panel.classList.add('hidden'); panel.textContent = '';
+      }
+    }
+    renderHistory();
+  }
+  function renderHistory(){
+    const entries = Object.entries(state.logs).sort((a,b) => b[0].localeCompare(a[0])).slice(0,6);
+    if(!entries.length){ $('historyList').innerHTML = '<div class="empty">今日の記録をつけると、ここに表示されるよ。</div>'; return; }
+    $('historyList').innerHTML = entries.map(([date,log]) => {
+      const done = log.result === 'done';
+      const reason = log.reason ? ` · ${escapeHtml(log.reason)}` : '';
+      return `<div class="history-item"><div class="history-mark ${done?'':'no'}">${done?'✓':'↗'}</div><div class="history-copy"><strong>${escapeHtml(log.goal)}</strong><small>${formatDate(date)} · ${done?'目標達成':'振り返り記録'}${reason}</small></div><div class="history-pts">+${log.points} pt</div></div>`;
+    }).join('');
+  }
+  function escapeHtml(str){ return String(str).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+
+  $('saveGoal').addEventListener('click', () => {
+    const text = $('goalInput').value.trim();
+    if(!text){ showToast('今日やってみることを入力してね'); $('goalInput').focus(); return; }
+    state.goals[today()] = { category: $('category').value, text };
+    saveState(); render(); showToast('今日の目標を保存したよ！');
+  });
+
+  $('markDone').addEventListener('click', () => {
+    const goal = state.goals[today()]; if(!goal || state.logs[today()]) return;
+    state.logs[today()] = { goal: goal.text, category: goal.category, result: 'done', points: 10, at: Date.now() };
+    state.points += 10; saveState(); render(); showToast('達成おめでとう！ +10 pt');
+  });
+  $('markMissed').addEventListener('click', () => {
+    const goal = state.goals[today()]; if(!goal || state.logs[today()]) return;
+    state.logs[today()] = { goal: goal.text, category: goal.category, result: 'missed', points: 3, at: Date.now() };
+    state.points += 3; saveState(); render();
+    $('reflectionCard').scrollIntoView({behavior:'smooth',block:'start'});
+    showToast('記録できたよ。自分を責めずに振り返ろう +3 pt');
+  });
+
+  const hintByReason = {
+    '時間が足りなかった':'明日は最初から長い時間を取らず、5分だけやる時間を決めてみよう。',
+    '思ったより難しかった':'目標を小さなステップに分けてみよう。最初の1つができれば十分。',
+    '忘れてしまった':'やる時間を決めて、スマホやノートに短いリマインダーを置くのはどう？',
+    '予定や体調の都合':'予定や体調に合わせて、休む・目標を軽くする選択も大切だよ。',
+    'その他':'何があったかを一言だけメモして、明日は無理のない小さな目標にしてみよう。'
+  };
+  $('makeHint').addEventListener('click', () => {
+    const chosen = document.querySelector('input[name="reason"]:checked');
+    if(!chosen){ showToast('近い理由を1つ選んでね'); return; }
+    const reason = chosen.value;
+    const log = state.logs[today()];
+    if(log){ log.reason = reason; saveState(); }
+    $('hintText').textContent = hintByReason[reason] || hintByReason['その他'];
+    const goal = state.goals[today()];
+    $('tomorrowInput').value = goal ? goal.text : '';
+    $('hintArea').classList.remove('hidden');
+    renderHistory();
+  });
+  $('saveTomorrow').addEventListener('click', () => {
+    const text = $('tomorrowInput').value.trim();
+    if(!text){ showToast('明日の目標を入力してね'); $('tomorrowInput').focus(); return; }
+    const d = new Date(); d.setDate(d.getDate()+1);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const goal = state.goals[today()];
+    state.goals[key] = { category: goal ? goal.category : 'その他', text };
+    if(state.logs[today()]){ state.logs[today()].tomorrowGoal = text; }
+    saveState(); showToast('明日の目標を保存したよ！明日アプリを開いて確認してね。');
+  });
+
+  // If the user opens the app on the following day, show any goal they planned yesterday.
+  if(!state.goals[today()]){
+    const d = new Date(); d.setDate(d.getDate()-1);
+    const previous = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if(state.goals[previous] && state.logs[previous] && state.logs[previous].tomorrowGoal){
+      state.goals[today()] = { category: state.goals[previous].category, text: state.logs[previous].tomorrowGoal };
+      saveState();
+    }
+  }
+  render();
+})();
+</script>
+</body>
+</html>
