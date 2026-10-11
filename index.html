@@ -752,6 +752,19 @@
       .order('created_at', { ascending: false }).limit(50);
     if (error) { say('投稿を読み込めませんでした：' + error.message); return; }
     feedCache = posts || [];
+    const { data: allLikes, error: likesError } = await client
+  .from('likes')
+  .select('post_id');
+
+if (likesError) {
+  say('いいね数を読み込めませんでした：' + likesError.message);
+  return;
+}
+
+const likeCounts = {};
+for (const like of allLikes || []) {
+  likeCounts[like.post_id] = (likeCounts[like.post_id] || 0) + 1;
+}
     if (!feedCache.length) {
       target.innerHTML = '<p class="cloud-small">まだ投稿はありません。最初の投稿をしてみよう！</p>';
       say(currentUser ? '接続済み。最初の投稿を待っています。' : '接続済み。投稿を見るにはログインしてね。');
@@ -771,7 +784,8 @@
         </div>
         <div style="white-space:pre-wrap;overflow-wrap:anywhere">${html(post.content)}</div>
         <div class="cloud-actions">
-          <button class="cloud-btn" data-comments="${html(post.id)}">コメントを見る / 書く</button>
+          <button class="cloud-btn" data-like-post="${html(post.id)}">♡ いいね</button>
+<span class="cloud-small" data-like-count="${html(post.id)}">いいね ${likeCounts[post.id] || 0}</span>          <button class="cloud-btn" data-comments="${html(post.id)}">コメントを見る / 書く</button>
           ${isOwn ? `<button class="cloud-btn" data-delete-post="${html(post.id)}">自分の投稿を削除</button>` : ''}
         </div>
         <div id="comments-${html(post.id)}" class="cloud-hidden"></div>`;
@@ -799,6 +813,46 @@
       panel.classList.toggle('cloud-hidden');
       if (!panel.classList.contains('cloud-hidden')) await loadComments(postId, panel);
     }));
+    target.querySelectorAll('[data-like-post]').forEach(button => {
+  button.addEventListener('click', async () => {
+    if (!currentUser) {
+      say('いいねするにはログインしてね。');
+      return;
+    }
+
+    const postId = button.dataset.likePost;
+
+    try {
+      const { data: existing, error: findError } = await client
+        .from('likes')
+        .select('id')
+        .eq('post_id', postId)
+        .eq('user_id', currentUser.id)
+        .maybeSingle();
+
+      if (findError) throw findError;
+
+      if (existing) {
+        const { error } = await client
+          .from('likes')
+          .delete()
+          .eq('id', existing.id);
+
+        if (error) throw error;
+      } else {
+        const { error } = await client
+          .from('likes')
+          .insert({ post_id: postId, user_id: currentUser.id });
+
+        if (error) throw error;
+      }
+
+      await loadOnlineFeed();
+    } catch (e) {
+      say('いいねを更新できませんでした：' + e.message);
+    }
+  });
+});
     target.querySelectorAll('[data-delete-post]').forEach(button => button.addEventListener('click', async () => {
       if (!confirm('この投稿を削除しますか？')) return;
       const { error } = await client.from('posts').delete().eq('id', button.dataset.deletePost).eq('user_id', currentUser.id);
