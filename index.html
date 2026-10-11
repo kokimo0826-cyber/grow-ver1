@@ -64,6 +64,26 @@
     .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1c2d48;color:white;padding:12px 18px;border-radius:999px;box-shadow:0 8px 28px rgba(0,0,0,.18);font-size:13px;z-index:10;max-width:calc(100% - 30px);text-align:center}
     @media(max-width:760px){.app{padding:16px 12px 30px}.hero{grid-template-columns:1fr;padding:23px;border-radius:22px}.hero-note{justify-self:start;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 15px;min-width:0}.hero-note .star{font-size:22px}.hero-note strong{display:inline;font-size:18px}.hero-note span{display:block}.layout{grid-template-columns:1fr}.card{padding:18px}.row-fields{grid-template-columns:1fr}.date-pill{font-size:10px;padding:8px}.brand-name{font-size:23px}}
     @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+    .social-card{margin-top:20px}
+    .post-form{display:grid;gap:10px;margin:14px 0 20px}
+    .post-input{width:100%;min-height:88px;resize:vertical;border:1px solid #dfe5ef;border-radius:13px;padding:12px;font:inherit;color:#26334a;background:#fff}
+    .post-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .post-note{font-size:11px;color:#7a879b;line-height:1.6}
+    .post-btn,.cheer-btn{border:0;border-radius:12px;padding:10px 15px;font-weight:700;cursor:pointer}
+    .post-btn{background:#263c60;color:white;justify-self:start}
+    .feed-list{display:grid;gap:12px}
+    .feed-post{border:1px solid #e5eaf2;border-radius:16px;padding:15px;background:#fff}
+    .feed-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#e8f7ed;font-size:19px;flex-shrink:0}
+    .feed-name{font-size:13px;font-weight:800;color:#26334a}
+    .feed-time{font-size:11px;color:#8994a7;margin-top:2px}
+    .feed-text{font-size:14px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;color:#39465b}
+    .feed-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}
+    .cheer-btn{background:#f0f7f2;color:#24643e;font-size:12px}
+    .cheer-btn.cheered{background:#d9f3e2}
+    .feed-tag{font-size:11px;color:#66758d;background:#f2f5fa;border-radius:999px;padding:5px 8px}
+
   </style>
 </head>
 <body>
@@ -150,7 +170,20 @@
         </section>
       </aside>
     </div>
-    <footer>Grow. Ver.1 試作品 · 記録はこのブラウザー内に保存されます</footer>
+
+    <section class="card social-card" aria-labelledby="communityHeading">
+      <div class="section-head"><h2 id="communityHeading">🌱 成長フィード</h2><span class="tag">SNS PREVIEW</span></div>
+      <p class="notice">頑張ったことや小さな一歩をシェアする場所。大きな成果じゃなくてもOK！</p>
+      <form id="postForm" class="post-form">
+        <label class="label" for="postInput">今日の成長を投稿してみよう</label>
+        <textarea id="postInput" class="post-input" maxlength="240" placeholder="例：今日は苦手な英単語を10個復習できた！"></textarea>
+        <div class="post-meta"><span class="post-note">名前・学校名・住所・連絡先などの個人情報は書かないでね。</span><button class="post-btn" type="submit">投稿する ↗</button></div>
+      </form>
+      <div id="feedList" class="feed-list" aria-live="polite"></div>
+      <p class="post-note" style="margin-top:13px">※これはSNS画面の試作品。投稿や応援は今使っているブラウザー内だけに保存され、友達のスマホには共有されません。</p>
+    </section>
+
+    <footer>Grow. Ver.2 SNS画面の試作品 · 投稿はこのブラウザー内に保存されます</footer>
   </main>
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 <script>
@@ -292,6 +325,57 @@
       saveState();
     }
   }
+
+  // SNS feed preview: local browser only, not shared with other users.
+  const FEED_KEY = 'grow-ver2-local-feed-v1';
+  const starterPosts = [
+    { id: 'sample-1', name: 'みどり', emoji: '🌿', text: '今日は宿題を始める前に、机の上を5分だけ片づけた！小さいけど一歩前進。', tag: '生活', cheers: 2, mine: false },
+    { id: 'sample-2', name: 'そら', emoji: '⚽', text: '部活で昨日より声を出せた。次も自分のペースで頑張る！', tag: '部活', cheers: 4, mine: false }
+  ];
+  let feed = loadFeed();
+  function loadFeed(){
+    try { const saved = localStorage.getItem(FEED_KEY); return saved ? JSON.parse(saved) : starterPosts; }
+    catch(e){ return starterPosts; }
+  }
+  function saveFeed(){ try { localStorage.setItem(FEED_KEY, JSON.stringify(feed)); } catch(e) {} }
+  function renderFeed(){
+    const list = $('feedList');
+    list.textContent = '';
+    feed.forEach(post => {
+      const article = document.createElement('article'); article.className = 'feed-post';
+      const top = document.createElement('div'); top.className = 'feed-top';
+      const avatar = document.createElement('div'); avatar.className = 'avatar'; avatar.textContent = post.emoji || '🌱';
+      const nameWrap = document.createElement('div');
+      const name = document.createElement('div'); name.className = 'feed-name'; name.textContent = post.name || 'Grow.メンバー';
+      const time = document.createElement('div'); time.className = 'feed-time'; time.textContent = post.mine ? '自分の投稿' : 'サンプル投稿';
+      nameWrap.append(name, time); top.append(avatar, nameWrap);
+      const body = document.createElement('div'); body.className = 'feed-text'; body.textContent = post.text;
+      const bottom = document.createElement('div'); bottom.className = 'feed-bottom';
+      const tag = document.createElement('span'); tag.className = 'feed-tag'; tag.textContent = post.tag || '成長記録';
+      const cheer = document.createElement('button'); cheer.type = 'button'; cheer.className = 'cheer-btn' + (post.cheered ? ' cheered' : ''); cheer.textContent = `💚 応援！ ${post.cheers || 0}`;
+      cheer.setAttribute('aria-pressed', post.cheered ? 'true' : 'false');
+      cheer.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const wasCheered = Boolean(post.cheered);
+        post.cheered = !wasCheered;
+        post.cheers = Math.max(0, Number(post.cheers || 0) + (post.cheered ? 1 : -1));
+        saveFeed();
+        renderFeed();
+        showToast(post.cheered ? '応援を送ったよ！💚' : '応援を取り消したよ');
+      });
+      bottom.append(tag, cheer); article.append(top, body, bottom); list.append(article);
+    });
+  }
+  $('postForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const text = $('postInput').value.trim();
+    if(!text){ showToast('投稿する内容を入力してね'); return; }
+    feed.unshift({ id: 'post-' + Date.now(), name: 'あなた', emoji: '🌱', text, tag: '成長記録', cheers: 0, mine: true });
+    saveFeed(); renderFeed(); $('postInput').value = ''; showToast('試作品に投稿したよ！');
+  });
+  renderFeed();
+
   render();
 })();
 </script>
