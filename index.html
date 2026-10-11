@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f8ff">
-  <title>Grow. | 今日の小さな一歩</title>
+  <title>Grow. — 今日の小さな一歩</title>
   <style>
     :root{--ink:#17243b;--muted:#67738a;--line:#e5eaf3;--paper:#ffffff;--bg:#f4f7fc;--blue:#3b82f6;--blue-dark:#245fc0;--mint:#daf7e7;--green:#178451;--orange:#ffb04a;--purple:#8054ee;--shadow:0 10px 28px rgba(30,52,91,.08)}
     *{box-sizing:border-box}
@@ -45,6 +45,7 @@
     .empty{padding:17px;border:1px dashed #d4deed;border-radius:15px;color:#778398;text-align:center;font-size:13px;background:#fafcff}
     .notice{font-size:12px;color:#65748a;background:#f8faff;border-radius:12px;padding:11px 12px;margin-top:13px}
     .hidden{display:none!important}
+    .profile-modal{position:fixed;inset:0;z-index:100;background:rgba(15,27,47,.48);display:grid;place-items:center;padding:18px}.profile-modal-card{width:min(100%,440px);max-height:80vh;overflow:auto;background:#fff;border-radius:24px;padding:22px;box-shadow:0 20px 60px rgba(10,25,50,.25)}.public-profile-head{display:flex;align-items:center;gap:13px;margin:10px 0 16px}.public-avatar{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:#e8f7ed;font-size:30px;flex-shrink:0}.public-profile-name{font-size:20px;font-weight:850}.public-profile-bio{font-size:13px;color:var(--muted);margin-top:4px}.modal-post{padding:12px;background:#f7f9fd;border-radius:14px;margin-top:9px;font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
     .reason-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:11px 0 13px}
     .reason-option{position:relative}.reason-option input{position:absolute;opacity:0;pointer-events:none}
     .reason-option span{display:block;border:1px solid #dce3ee;border-radius:12px;background:#fbfcff;padding:10px;text-align:center;color:#536178;font-size:12px;cursor:pointer}
@@ -84,7 +85,7 @@
     .post-btn{background:#263c60;color:white;justify-self:start}
     .feed-list{display:grid;gap:12px}
     .feed-post{border:1px solid #e5eaf2;border-radius:16px;padding:15px;background:#fff}
-    .feed-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .feed-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer;border:0;background:transparent;text-align:left;padding:0;width:100%;color:inherit;border-radius:12px}.feed-top:focus-visible{outline:3px solid #b7d1ff;outline-offset:4px}
     .avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#e8f7ed;font-size:19px;flex-shrink:0}
     .feed-name{font-size:13px;font-weight:800;color:#26334a}
     .feed-time{font-size:11px;color:#8994a7;margin-top:2px}
@@ -103,7 +104,140 @@
     .profile-bio{font-size:12px;color:#6b7890;white-space:pre-wrap;overflow-wrap:anywhere}
     @media(max-width:520px){.profile-layout{grid-template-columns:1fr}.profile-avatar-wrap{display:flex;justify-content:center}}
 
+
+    /* Grow. Ver.6 — editorial, quiet, human-made visual direction */
+    :root{
+      --ink:#20251f; --muted:#73786f; --line:#e4e4dc; --paper:#fffefa;
+      --bg:#f5f4ee; --blue:#355e45; --blue-dark:#284936; --mint:#e8eee4;
+      --green:#355e45; --orange:#d58a48; --purple:#796b91;
+      --shadow:0 2px 8px rgba(31,39,29,.035);
+    }
+    body{
+      background:var(--bg); color:var(--ink);
+      font-family: -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+      line-height:1.65;
+    }
+    .app{max-width:760px;padding:22px 18px 40px}
+    header{margin-bottom:25px;padding-bottom:17px;border-bottom:1px solid #dedfd5}
+    .logo{width:37px;height:37px;border-radius:11px;background:#355e45;box-shadow:none;font-size:21px}
+    .brand{gap:10px}
+    .brand-name{font-size:24px;font-weight:800;letter-spacing:-1.2px}
+    .brand-sub{font-size:11px;letter-spacing:.02em;color:#777b70}
+    .date-pill{background:transparent;border:1px solid #d8d9cf;border-radius:7px;padding:7px 10px;color:#686d62}
+    .hero{
+      grid-template-columns:1fr auto;gap:18px;align-items:end;
+      background:#e8eee4;color:#20251f;padding:27px 26px;border-radius:15px;
+      box-shadow:none;border:1px solid #dce4d7;margin-bottom:16px
+    }
+    .hero:after{display:none}
+    .eyebrow{color:#55725a;font-size:10px;letter-spacing:1.8px}
+    h1{font-size:clamp(26px,4vw,34px);line-height:1.42;letter-spacing:-1.3px;margin:8px 0 10px}
+    .hero p{color:#60685d;font-size:13px;max-width:390px}
+    .hero-note{background:transparent;color:#355e45;border:0;border-left:1px solid #cbd7c7;border-radius:0;padding:8px 0 8px 18px;min-width:112px;text-align:left;box-shadow:none}
+    .hero-note .star{display:none}
+    .hero-note strong{font-size:23px;letter-spacing:-.8px}
+    .hero-note span{font-size:10px;color:#687467}
+    .layout{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:14px}
+    .stack{gap:14px}
+    .card{background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:19px;box-shadow:none}
+    .section-head{margin-bottom:14px}
+    .section-head h2{font-size:16px;letter-spacing:-.35px}
+    .tag{background:transparent;color:#777d70;border:1px solid #e1e2d8;border-radius:5px;font-size:9px;letter-spacing:.6px;padding:4px 6px}
+    .label{color:#4e554b;font-size:11px;letter-spacing:.02em}
+    .field,.post-input{background:#fffefa;border:1px solid #dcded4;border-radius:8px;color:#20251f}
+    .field:focus,.post-input:focus{border-color:#78977c;box-shadow:0 0 0 2px #e5ede3}
+    .btn{border-radius:8px;font-size:13px;box-shadow:none!important}
+    .btn:hover{transform:none;filter:brightness(.97)}
+    .btn-primary{background:#355e45}
+    .btn-primary:hover{background:#284936}
+    .btn-success{background:#355e45}
+    .btn-soft{background:#e8eee4;color:#355e45}
+    .btn-muted{background:#f0f0e9;color:#53594f}
+    .today-goal{background:#f2f4ed;border:1px solid #e3e6dc;border-radius:9px}
+    .goal-icon{border-radius:8px;background:#e4e9de}
+    .hint{color:#83877d}
+    .empty{border:1px dashed #d6d8cd;border-radius:9px;background:#faf9f3;color:#7a7f73}
+    .notice{background:#f3f3ec;border:1px solid #e8e8df;border-radius:8px;color:#676d62}
+    .stats{gap:7px}
+    .stat{background:#fbfaf4;border:1px solid #e8e8df;border-radius:9px;padding:12px 6px}
+    .stat .ico{font-size:16px}
+    .stat strong{font-size:21px}
+    .stat span{font-size:10px}
+    .history-item{border:0;border-top:1px solid #eeeee7;border-radius:0;padding:12px 0}
+    .history-mark{border-radius:8px;background:#e8eee4}
+    .history-mark.no{background:#f6eadc}
+    .badge-row{background:#f4f1e4;border:1px solid #e9e3cf;border-radius:9px}
+    .badge-row[style*="background:#f3f0ff"]{background:#f0edf4!important;border-color:#e5dfea!important}
+    .reason-option span{border-radius:8px;background:#fffefa}
+    .reason-option input:checked+span{border-color:#7b987e;background:#edf2e9;color:#355e45}
+    .hint-box{background:#f0edf4;border:1px solid #e4deeb;border-radius:10px;color:#50475e}
+    .profile-card,.social-card{margin-top:0;margin-bottom:14px}
+    .profile-layout{gap:15px}
+    .profile-avatar{border:2px solid #dce5d8;background:#e8eee4}
+    .profile-preview{background:#f4f5ef;border:1px solid #e5e6dd;border-radius:10px}
+    .post-form{gap:10px}
+    .post-input{min-height:100px}
+    .post-btn{background:#355e45;border-radius:8px}
+    .feed-list{gap:0}
+    .feed-post{border:0;border-top:1px solid #e6e6de;border-radius:0;padding:17px 0;background:transparent}
+    .feed-top{gap:10px}
+    .avatar{background:#e8eee4;border:1px solid #dce5d8}
+    .feed-name{color:#20251f}
+    .feed-time{color:#898d82}
+    .feed-text{color:#3c433a}
+    .feed-tag{background:#f0f0e9;color:#676d62;border-radius:5px}
+    .cheer-btn{background:#edf2e9;color:#355e45;border-radius:7px}
+    .cheer-btn.cheered{background:#dce9d8}
+    .profile-modal{background:rgba(28,34,27,.42)}
+    .profile-modal-card{border-radius:14px;box-shadow:0 12px 40px rgba(20,30,20,.18)}
+    .modal-post{background:#f3f3ec;border-radius:8px}
+    footer{color:#888c82}
+    .toast{background:#263b2d;border-radius:8px;box-shadow:none}
+    body{padding-bottom:86px}
+    .bottom-nav{
+      background:rgba(255,254,250,.97);border-top:1px solid #dedfd5;box-shadow:0 -3px 12px rgba(31,39,29,.035);
+      backdrop-filter:blur(12px);padding:7px max(12px,env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom));
+    }
+    .nav-item{border-radius:8px;color:#888c82;min-height:52px;font-size:10px;font-weight:650;gap:2px}
+    .nav-item .nav-icon{font-size:19px;filter:grayscale(.15)}
+    .nav-item[aria-current="page"]{color:#355e45;background:#e8eee4}
+    @media(max-width:760px){
+      .app{padding:14px 13px 28px}
+      header{margin-bottom:18px;padding-bottom:14px}
+      .hero{grid-template-columns:1fr;padding:22px 19px;gap:14px;border-radius:12px}
+      .hero-note{justify-self:start;display:block;border-left:0;border-top:1px solid #cbd7c7;padding:10px 0 0;min-width:0}
+      .hero-note strong{font-size:20px}
+      .layout{grid-template-columns:1fr}
+      .card{padding:16px}
+      .row-fields{grid-template-columns:1fr}
+      .profile-layout{grid-template-columns:84px 1fr}
+      .profile-avatar-wrap{display:block}
+    }
+    @media(max-width:390px){
+      .profile-layout{grid-template-columns:1fr}
+      .profile-avatar-wrap{display:flex;justify-content:flex-start}
+      .brand-sub{max-width:190px}
+      .date-pill{font-size:9px}
+    }
+
   </style>
+
+  <style>
+    .cloud-panel{border:1px solid var(--line,#e4e8e1);border-radius:12px;padding:16px;margin:0 0 16px;background:#fff}
+    .cloud-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+    .cloud-input{width:100%;box-sizing:border-box;border:1px solid #d9dfd4;border-radius:9px;padding:11px;font:inherit;background:#fff;color:#263027}
+    .cloud-btn{border:1px solid #d5ddd0;border-radius:9px;padding:10px 13px;background:#f3f5ef;color:#253326;font:inherit;cursor:pointer}
+    .cloud-btn.primary{background:#314b38;color:#fff;border-color:#314b38}
+    .cloud-small{font-size:12px;color:#687268}
+    .cloud-post{padding:14px 0;border-top:1px solid #ecefe8}
+    .cloud-post-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+    .cloud-avatar{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#edf1e7;font-size:20px}
+    .cloud-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .cloud-comment{margin:7px 0 7px 12px;padding-left:10px;border-left:2px solid #e5e9df;font-size:13px}
+    .cloud-status{font-size:13px;margin:8px 0;color:#526453}
+    .cloud-hidden{display:none!important}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <main class="app">
@@ -218,16 +352,63 @@
     <section class="card social-card" aria-labelledby="communityHeading">
       <div class="section-head"><h2 id="communityHeading">🌱 成長フィード</h2><span class="tag">SNS PREVIEW</span></div>
       <p class="notice">頑張ったことや小さな一歩をシェアする場所。大きな成果じゃなくてもOK！</p>
+      <section class="cloud-panel" aria-label="Grow.オンラインSNS">
+        <h3 style="margin:0 0 6px;font-size:16px">Grow. コミュニティ</h3>
+        <p class="cloud-small">アカウントでログインすると、投稿がみんなと共有されるよ。</p>
+        <div id="cloudSignedOut">
+          <label class="label" for="cloudEmail">メールアドレス</label>
+          <input id="cloudEmail" class="cloud-input" type="email" autocomplete="email" placeholder="you@example.com">
+          <label class="label" for="cloudPassword" style="margin-top:8px">パスワード（8文字以上推奨）</label>
+          <input id="cloudPassword" class="cloud-input" type="password" autocomplete="current-password" minlength="6" placeholder="パスワード">
+          <div class="cloud-row">
+            <button id="cloudSignUp" class="cloud-btn primary" type="button">新規登録</button>
+            <button id="cloudSignIn" class="cloud-btn" type="button">ログイン</button>
+          </div>
+          <p class="cloud-small">登録確認メールが届いた場合は、メール内の確認リンクを開いてね。メールは他の人に公開されないよ。</p>
+        </div>
+        <div id="cloudSignedIn" class="cloud-hidden">
+          <div class="cloud-status" id="cloudUserStatus"></div>
+          <div class="cloud-row">
+            <button id="cloudSignOut" class="cloud-btn" type="button">ログアウト</button>
+            <button id="cloudRefresh" class="cloud-btn" type="button">更新</button>
+            <button id="cloudNotificationsButton" class="cloud-btn" type="button">通知を見る</button>
+          </div>
+          <div id="cloudNotifications" class="cloud-hidden"></div>
+          <form id="cloudProfileForm">
+            <label class="label" for="cloudDisplayName">公開する表示名</label>
+            <input id="cloudDisplayName" class="cloud-input" maxlength="30" placeholder="ニックネーム">
+            <label class="label" for="cloudBio" style="margin-top:8px">自己紹介</label>
+            <input id="cloudBio" class="cloud-input" maxlength="160" placeholder="自分のペースで成長中！">
+            <button class="cloud-btn" type="submit" style="margin-top:8px">公開プロフィールを保存</button>
+          </form>
+          <form id="cloudPostForm" style="margin-top:14px">
+            <label class="label" for="cloudPostContent">みんなに成長をシェア</label>
+            <textarea id="cloudPostContent" class="cloud-input" maxlength="1000" rows="3" placeholder="今日の小さな一歩を書こう"></textarea>
+            <button class="cloud-btn primary" type="submit" style="margin-top:8px">みんなに投稿 ↗</button>
+          </form>
+        </div>
+        <div id="cloudStatus" class="cloud-status" role="status" aria-live="polite">オンラインSNSを準備中…</div>
+        <div id="cloudFeed"></div>
+      </section>
       <form id="postForm" class="post-form">
         <label class="label" for="postInput">今日の成長を投稿してみよう</label>
         <textarea id="postInput" class="post-input" maxlength="240" placeholder="例：今日は苦手な英単語を10個復習できた！"></textarea>
         <div class="post-meta"><span class="post-note">名前・学校名・住所・連絡先などの個人情報は書かないでね。</span><button class="post-btn" type="submit">投稿する ↗</button></div>
       </form>
       <div id="feedList" class="feed-list" aria-live="polite"></div>
-      <p class="post-note" style="margin-top:13px">※これはSNS画面の試作品。投稿や応援は今使っているブラウザー内だけに保存され、友達のスマホには共有されません。</p>
+      <p class="post-note" style="margin-top:13px">上の「Grow. コミュニティ」はSupabase接続後、アカウント間で共有される投稿欄です。下の旧プレビューはこのブラウザー内だけの試作品です。</p>
     </section>
 
-    <footer>Grow. Ver.2 SNS画面の試作品 · 投稿はこのブラウザー内に保存されます</footer>
+    <div id="publicProfileModal" class="profile-modal hidden" role="dialog" aria-modal="true" aria-labelledby="publicProfileTitle">
+      <div class="profile-modal-card">
+        <div class="section-head"><h2 id="publicProfileTitle">プロフィール</h2><button id="closePublicProfile" class="btn btn-muted" type="button">閉じる ✕</button></div>
+        <div class="public-profile-head"><div class="public-avatar" id="publicProfileAvatar">🌱</div><div><div class="public-profile-name" id="publicProfileName">Grow.メンバー</div><div class="public-profile-bio" id="publicProfileBio">自分のペースで成長中！</div></div></div>
+        <h3 style="font-size:14px;margin:18px 0 8px">この人の投稿</h3>
+        <div id="publicProfilePosts"></div>
+        <p class="post-note">※現在はサンプル投稿と自分の投稿だけを表示する試作品です。</p>
+      </div>
+    </div>
+    <footer>Grow. — 小さな一歩を、記録する。</footer>
   </main>
   <nav class="bottom-nav" aria-label="メインナビゲーション">
     <button class="nav-item" type="button" data-tab="home" aria-current="page"><span class="nav-icon">🏠</span><span>ホーム</span></button>
@@ -421,12 +602,14 @@
     list.textContent = '';
     feed.forEach(post => {
       const article = document.createElement('article'); article.className = 'feed-post';
-      const top = document.createElement('div'); top.className = 'feed-top';
+      const top = document.createElement('button'); top.type = 'button'; top.className = 'feed-top';
+      top.setAttribute('aria-label', `${post.name || 'Grow.メンバー'}のプロフィールを開く`);
       const avatar = document.createElement('div'); avatar.className = 'avatar'; avatar.textContent = post.emoji || '🌱';
       const nameWrap = document.createElement('div');
       const name = document.createElement('div'); name.className = 'feed-name'; name.textContent = post.name || 'Grow.メンバー';
-      const time = document.createElement('div'); time.className = 'feed-time'; time.textContent = post.mine ? '自分の投稿' : 'サンプル投稿';
+      const time = document.createElement('div'); time.className = 'feed-time'; time.textContent = post.mine ? '自分の投稿 · プロフィールを見る' : 'サンプル投稿 · プロフィールを見る';
       nameWrap.append(name, time); top.append(avatar, nameWrap);
+      top.addEventListener('click', () => openPublicProfile(post));
       const body = document.createElement('div'); body.className = 'feed-text'; body.textContent = post.text;
       const bottom = document.createElement('div'); bottom.className = 'feed-bottom';
       const tag = document.createElement('span'); tag.className = 'feed-tag'; tag.textContent = post.tag || '成長記録';
@@ -445,6 +628,28 @@
       bottom.append(tag, cheer); article.append(top, body, bottom); list.append(article);
     });
   }
+  function openPublicProfile(post){
+    const isMine = Boolean(post.mine);
+    $('publicProfileAvatar').textContent = isMine ? (profile.emoji || '🌱') : (post.emoji || '🌱');
+    $('publicProfileName').textContent = isMine ? (profile.name || 'Grow.メンバー') : (post.name || 'Grow.メンバー');
+    $('publicProfileBio').textContent = isMine ? (profile.bio || '自己紹介はまだありません') : 'Grow.で自分のペースで成長中！';
+    const posts = feed.filter(item => isMine ? item.mine : (!item.mine && item.name === post.name));
+    const target = $('publicProfilePosts');
+    target.textContent = '';
+    if(!posts.length){
+      const empty = document.createElement('div'); empty.className = 'empty'; empty.textContent = 'まだ投稿はありません。'; target.append(empty);
+    } else {
+      posts.forEach(item => {
+        const entry = document.createElement('div'); entry.className = 'modal-post'; entry.textContent = item.text; target.append(entry);
+      });
+    }
+    $('publicProfileModal').classList.remove('hidden');
+  }
+  function closePublicProfile(){ $('publicProfileModal').classList.add('hidden'); }
+  $('closePublicProfile').addEventListener('click', closePublicProfile);
+  $('publicProfileModal').addEventListener('click', (event) => { if(event.target === $('publicProfileModal')) closePublicProfile(); });
+  document.addEventListener('keydown', (event) => { if(event.key === 'Escape') closePublicProfile(); });
+
   $('postForm').addEventListener('submit', (event) => {
     event.preventDefault();
     const text = $('postInput').value.trim();
@@ -480,5 +685,222 @@
   render();
 })();
 </script>
+
+<script>
+(() => {
+  // STEP: Replace these two placeholders with your Supabase Project URL and Publishable key.
+  const SUPABASE_URL = 'https://kzezvdqzzofazmfxdrho.supabase.co/rest/v1/';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_mRp_WdHHMizIwKNwiLwu2g_BpBmtdZG;
+  const statusEl = document.getElementById('cloudStatus');
+  const $c = (id) => document.getElementById(id);
+  const say = (message) => { if (statusEl) statusEl.textContent = message; };
+  const html = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  if (!window.supabase || SUPABASE_URL.includes('PASTE_') || SUPABASE_PUBLISHABLE_KEY.includes('PASTE_')) {
+    say('接続設定がまだです。HTML内のSUPABASE_URLとSUPABASE_PUBLISHABLE_KEYを設定してください。');
+    return;
+  }
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  let currentUser = null;
+  let profileRow = null;
+  let followingIds = new Set();
+  let feedCache = [];
+
+  async function ensureProfile(user) {
+    const { data: existing, error: readError } = await client.from('profiles').select('*').eq('id', user.id).maybeSingle();
+    if (readError) throw readError;
+    if (existing) return existing;
+    const displayName = user.user_metadata?.display_name || 'Grow.メンバー';
+    const username = 'user_' + user.id.replaceAll('-', '').slice(0, 24);
+    const { data, error } = await client.from('profiles')
+      .upsert({ id: user.id, username, display_name: displayName, bio: '自分のペースで成長中！' }, { onConflict: 'id' })
+      .select().single();
+    if (error) throw error;
+    return data;
+  }
+
+  function updateAuthUI() {
+    $c('cloudSignedOut').classList.toggle('cloud-hidden', !!currentUser);
+    $c('cloudSignedIn').classList.toggle('cloud-hidden', !currentUser);
+    if (currentUser && profileRow) {
+      $c('cloudUserStatus').textContent = 'ログイン中：' + (profileRow.display_name || profileRow.username);
+      $c('cloudDisplayName').value = profileRow.display_name || '';
+      $c('cloudBio').value = profileRow.bio || '';
+    }
+  }
+
+  async function refreshSession() {
+    const { data, error } = await client.auth.getSession();
+    if (error) throw error;
+    currentUser = data.session?.user || null;
+    profileRow = currentUser ? await ensureProfile(currentUser) : null;
+    if (currentUser) {
+      const { data: follows, error: followError } = await client.from('follows').select('following_id').eq('follower_id', currentUser.id);
+      if (followError) throw followError;
+      followingIds = new Set((follows || []).map(row => row.following_id));
+    } else {
+      followingIds = new Set();
+    }
+    updateAuthUI();
+    await loadOnlineFeed();
+  }
+
+  async function loadOnlineFeed() {
+    const target = $c('cloudFeed');
+    target.innerHTML = '';
+    const { data: posts, error } = await client.from('posts')
+      .select('id,user_id,content,created_at,profiles(id,username,display_name,bio)')
+      .order('created_at', { ascending: false }).limit(50);
+    if (error) { say('投稿を読み込めませんでした：' + error.message); return; }
+    feedCache = posts || [];
+    if (!feedCache.length) {
+      target.innerHTML = '<p class="cloud-small">まだ投稿はありません。最初の投稿をしてみよう！</p>';
+      say(currentUser ? '接続済み。最初の投稿を待っています。' : '接続済み。投稿を見るにはログインしてね。');
+      return;
+    }
+    say('オンライン投稿 ' + feedCache.length + '件を表示中');
+    for (const post of feedCache) {
+      const author = post.profiles || {};
+      const card = document.createElement('article');
+      card.className = 'cloud-post';
+      const isOwn = currentUser && post.user_id === currentUser.id;
+      card.innerHTML = `
+        <div class="cloud-post-head">
+          <div class="cloud-avatar">🌱</div>
+          <div style="flex:1"><strong>${html(author.display_name || 'Grow.メンバー')}</strong><div class="cloud-small">@${html(author.username || 'member')} · ${html(new Date(post.created_at).toLocaleString('ja-JP'))}</div></div>
+          ${currentUser && !isOwn ? `<button class="cloud-btn" data-follow="${html(post.user_id)}">${followingIds.has(post.user_id) ? 'フォロー中' : 'フォロー'}</button>` : ''}
+        </div>
+        <div style="white-space:pre-wrap;overflow-wrap:anywhere">${html(post.content)}</div>
+        <div class="cloud-actions">
+          <button class="cloud-btn" data-comments="${html(post.id)}">コメントを見る / 書く</button>
+          ${isOwn ? `<button class="cloud-btn" data-delete-post="${html(post.id)}">自分の投稿を削除</button>` : ''}
+        </div>
+        <div id="comments-${html(post.id)}" class="cloud-hidden"></div>`;
+      target.appendChild(card);
+    }
+    target.querySelectorAll('[data-follow]').forEach(button => button.addEventListener('click', async () => {
+      if (!currentUser) return;
+      const userId = button.dataset.follow;
+      try {
+        if (followingIds.has(userId)) {
+          const { error } = await client.from('follows').delete().eq('follower_id', currentUser.id).eq('following_id', userId);
+          if (error) throw error;
+          followingIds.delete(userId);
+        } else {
+          const { error } = await client.from('follows').insert({ follower_id: currentUser.id, following_id: userId });
+          if (error) throw error;
+          followingIds.add(userId);
+        }
+        await loadOnlineFeed();
+      } catch (e) { say('フォローを更新できませんでした：' + e.message); }
+    }));
+    target.querySelectorAll('[data-comments]').forEach(button => button.addEventListener('click', async () => {
+      const postId = button.dataset.comments;
+      const panel = $c('comments-' + postId);
+      panel.classList.toggle('cloud-hidden');
+      if (!panel.classList.contains('cloud-hidden')) await loadComments(postId, panel);
+    }));
+    target.querySelectorAll('[data-delete-post]').forEach(button => button.addEventListener('click', async () => {
+      if (!confirm('この投稿を削除しますか？')) return;
+      const { error } = await client.from('posts').delete().eq('id', button.dataset.deletePost).eq('user_id', currentUser.id);
+      if (error) { say('削除できませんでした：' + error.message); return; }
+      say('投稿を削除しました。'); await loadOnlineFeed();
+    }));
+  }
+
+  async function loadComments(postId, panel) {
+    const { data, error } = await client.from('comments')
+      .select('id,user_id,content,created_at,profiles(display_name,username)')
+      .eq('post_id', postId).order('created_at', { ascending: true });
+    if (error) { panel.innerHTML = `<p class="cloud-small">コメントを読み込めませんでした：${html(error.message)}</p>`; return; }
+    panel.innerHTML = (data || []).map(c => `<div class="cloud-comment"><strong>${html(c.profiles?.display_name || 'Grow.メンバー')}</strong>：${html(c.content)}<div class="cloud-small">${html(new Date(c.created_at).toLocaleString('ja-JP'))}</div></div>`).join('');
+    if (currentUser) {
+      const form = document.createElement('form');
+      form.className = 'cloud-row';
+      form.innerHTML = `<input class="cloud-input" style="flex:1;min-width:150px" maxlength="500" placeholder="応援コメントを書く" required><button class="cloud-btn primary" type="submit">送信</button>`;
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const input = form.querySelector('input');
+        const content = input.value.trim();
+        if (!content) return;
+        const { error } = await client.from('comments').insert({ post_id: postId, user_id: currentUser.id, content });
+        if (error) { say('コメントを送信できませんでした：' + error.message); return; }
+        await loadComments(postId, panel);
+        say('コメントを送信したよ！');
+      });
+      panel.appendChild(form);
+    } else {
+      panel.insertAdjacentHTML('beforeend', '<p class="cloud-small">コメントするにはログインしてね。</p>');
+    }
+  }
+
+  $c('cloudSignUp').addEventListener('click', async () => {
+    const email = $c('cloudEmail').value.trim(), password = $c('cloudPassword').value;
+    if (!email || password.length < 6) { say('メールアドレスと6文字以上のパスワードを入力してね。'); return; }
+    say('登録しています…');
+    const { data, error } = await client.auth.signUp({ email, password, options: { data: { display_name: 'Grow.メンバー' } } });
+    if (error) { say('登録できませんでした：' + error.message); return; }
+    if (!data.session) say('登録できたよ！確認メールのリンクを開いてからログインしてね。');
+    else { say('登録できたよ！'); await refreshSession(); }
+  });
+
+  $c('cloudSignIn').addEventListener('click', async () => {
+    const email = $c('cloudEmail').value.trim(), password = $c('cloudPassword').value;
+    if (!email || !password) { say('メールアドレスとパスワードを入力してね。'); return; }
+    say('ログインしています…');
+    const { error } = await client.auth.signInWithPassword({ email, password });
+    if (error) { say('ログインできませんでした：' + error.message); return; }
+    say('ログインしました！');
+    try { await refreshSession(); } catch (e) { say('プロフィール読み込みエラー：' + e.message); }
+  });
+
+  $c('cloudSignOut').addEventListener('click', async () => {
+    const { error } = await client.auth.signOut();
+    if (error) { say('ログアウトできませんでした：' + error.message); return; }
+    currentUser = null; profileRow = null; updateAuthUI(); await loadOnlineFeed(); say('ログアウトしました。');
+  });
+
+  $c('cloudRefresh').addEventListener('click', async () => {
+    try { await refreshSession(); say('最新の情報に更新したよ。'); }
+    catch(e) { say('更新できませんでした：' + e.message); }
+  });
+
+  $c('cloudProfileForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!currentUser) return;
+    const display_name = $c('cloudDisplayName').value.trim().slice(0,30) || 'Grow.メンバー';
+    const bio = $c('cloudBio').value.trim().slice(0,160);
+    const { data, error } = await client.from('profiles').update({ display_name, bio }).eq('id', currentUser.id).select().single();
+    if (error) { say('プロフィールを保存できませんでした：' + error.message); return; }
+    profileRow = data; updateAuthUI(); await loadOnlineFeed(); say('公開プロフィールを保存したよ！');
+  });
+
+  $c('cloudPostForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!currentUser) return;
+    const content = $c('cloudPostContent').value.trim();
+    if (!content) { say('投稿内容を入力してね。'); return; }
+    const { error } = await client.from('posts').insert({ user_id: currentUser.id, content });
+    if (error) { say('投稿できませんでした：' + error.message); return; }
+    $c('cloudPostContent').value = '';
+    await loadOnlineFeed(); say('みんなに投稿できたよ！');
+  });
+
+  $c('cloudNotificationsButton').addEventListener('click', async () => {
+    const panel = $c('cloudNotifications');
+    panel.classList.toggle('cloud-hidden');
+    if (panel.classList.contains('cloud-hidden') || !currentUser) return;
+    const { data, error } = await client.from('notifications')
+      .select('id,type,is_read,created_at,profiles!notifications_actor_id_fkey(display_name)')
+      .eq('recipient_id', currentUser.id).order('created_at', { ascending: false }).limit(30);
+    if (error) { panel.textContent = '通知を読み込めませんでした：' + error.message; return; }
+    panel.innerHTML = (data || []).map(n => `<div class="cloud-comment">${html(n.profiles?.display_name || 'ユーザー')} さんから ${html(({follow:'フォロー',comment:'コメント',cheer:'応援'})[n.type] || '通知')} · ${html(new Date(n.created_at).toLocaleString('ja-JP'))}${n.is_read ? '' : '（未読）'}</div>`).join('') || '<p class="cloud-small">まだ通知はありません。</p>';
+    await client.from('notifications').update({ is_read: true }).eq('recipient_id', currentUser.id);
+  });
+
+  client.auth.onAuthStateChange(() => { refreshSession().catch(e => say('接続エラー：' + e.message)); });
+  refreshSession().catch(e => say('接続エラー：' + e.message + '。SQL設定とSupabase接続情報を確認してね。'));
+})();
+</script>
+
 </body>
 </html>
