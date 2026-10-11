@@ -614,6 +614,13 @@
       const bottom = document.createElement('div'); bottom.className = 'feed-bottom';
       const tag = document.createElement('span'); tag.className = 'feed-tag'; tag.textContent = post.tag || '成長記録';
       const cheer = document.createElement('button'); cheer.type = 'button'; cheer.className = 'cheer-btn' + (post.cheered ? ' cheered' : ''); cheer.textContent = `💚 応援！ ${post.cheers || 0}`;
+      const likeButton = document.createElement('button');
+likeButton.type = 'button';
+likeButton.className = 'cheer-btn';
+likeButton.textContent = '♡ いいね';
+likeButton.addEventListener('click', () => {
+  showToast('いいね機能はオンライン投稿側で動作するよ');
+});
       cheer.setAttribute('aria-pressed', post.cheered ? 'true' : 'false');
       cheer.addEventListener('click', (event) => {
         event.preventDefault();
@@ -625,7 +632,7 @@
         renderFeed();
         showToast(post.cheered ? '応援を送ったよ！💚' : '応援を取り消したよ');
       });
-      bottom.append(tag, cheer); article.append(top, body, bottom); list.append(article);
+      bottom.append(tag, cheer, likeButton); article.append(top, body, bottom); list.append(article);
     });
   }
   function openPublicProfile(post){
