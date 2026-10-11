@@ -63,6 +63,16 @@
     footer{text-align:center;color:#8590a1;font-size:11px;margin-top:24px}
     .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1c2d48;color:white;padding:12px 18px;border-radius:999px;box-shadow:0 8px 28px rgba(0,0,0,.18);font-size:13px;z-index:10;max-width:calc(100% - 30px);text-align:center}
     @media(max-width:760px){.app{padding:16px 12px 30px}.hero{grid-template-columns:1fr;padding:23px;border-radius:22px}.hero-note{justify-self:start;display:flex;align-items:center;gap:12px;text-align:left;padding:10px 15px;min-width:0}.hero-note .star{font-size:22px}.hero-note strong{display:inline;font-size:18px}.hero-note span{display:block}.layout{grid-template-columns:1fr}.card{padding:18px}.row-fields{grid-template-columns:1fr}.date-pill{font-size:10px;padding:8px}.brand-name{font-size:23px}}
+
+    /* Bottom navigation */
+    body{padding-bottom:94px}
+    .bottom-nav{position:fixed;z-index:50;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:8px max(12px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid #e3eaf4;box-shadow:0 -8px 24px rgba(30,52,91,.08);backdrop-filter:blur(14px)}
+    .nav-item{border:0;background:transparent;color:#7b879b;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:7px 4px;font-size:11px;font-weight:750;min-height:56px}
+    .nav-item .nav-icon{font-size:21px;line-height:1.1}
+    .nav-item[aria-current="page"]{color:#245fc0;background:#edf4ff}
+    .tab-hidden{display:none!important}
+    @media(min-width:761px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(480px,100%);border:1px solid #e3eaf4;border-bottom:0;border-radius:18px 18px 0 0}}
+
     @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 
     .social-card{margin-top:20px}
@@ -83,6 +93,15 @@
     .cheer-btn{background:#f0f7f2;color:#24643e;font-size:12px}
     .cheer-btn.cheered{background:#d9f3e2}
     .feed-tag{font-size:11px;color:#66758d;background:#f2f5fa;border-radius:999px;padding:5px 8px}
+
+    .profile-card{margin-bottom:20px}
+    .profile-layout{display:grid;grid-template-columns:100px 1fr;gap:18px;align-items:start}
+    .profile-avatar{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:#e8f7ed;font-size:42px;border:3px solid #d9e9ff}
+    .profile-fields{display:grid;gap:12px}
+    .profile-preview{display:flex;gap:12px;align-items:center;background:#f6f9ff;border:1px solid #e5ecf7;padding:12px;border-radius:15px;margin-bottom:12px}
+    .profile-preview .profile-avatar{width:54px;height:54px;font-size:27px;flex-shrink:0}
+    .profile-bio{font-size:12px;color:#6b7890;white-space:pre-wrap;overflow-wrap:anywhere}
+    @media(max-width:520px){.profile-layout{grid-template-columns:1fr}.profile-avatar-wrap{display:flex;justify-content:center}}
 
   </style>
 </head>
@@ -171,6 +190,31 @@
       </aside>
     </div>
 
+
+    <section class="card profile-card" aria-labelledby="profileHeading">
+      <div class="section-head"><h2 id="profileHeading">👤 マイプロフィール</h2><span class="tag">MY PROFILE</span></div>
+      <div class="profile-preview">
+        <div class="profile-avatar" id="profilePreviewAvatar">🌱</div>
+        <div><strong id="profilePreviewName">Grow.メンバー</strong><div class="profile-bio" id="profilePreviewBio">自分のペースで成長中！</div></div>
+      </div>
+      <form id="profileForm" class="profile-layout">
+        <div class="profile-avatar-wrap">
+          <div style="width:100%">
+            <label class="label" for="profileEmoji">アイコン</label>
+            <select class="field" id="profileEmoji" aria-label="プロフィールアイコン">
+              <option value="🌱">🌱 新芽</option><option value="🌟">🌟 星</option><option value="🐱">🐱 猫</option><option value="🐼">🐼 パンダ</option><option value="⚽">⚽ サッカー</option><option value="📚">📚 本</option><option value="🎨">🎨 アート</option><option value="🎧">🎧 音楽</option>
+            </select>
+          </div>
+        </div>
+        <div class="profile-fields">
+          <div><label class="label" for="profileName">表示名（ニックネーム）</label><input class="field" id="profileName" maxlength="20" placeholder="例：そら" autocomplete="nickname"></div>
+          <div><label class="label" for="profileBio">ひとこと自己紹介</label><textarea class="field" id="profileBio" maxlength="80" rows="2" placeholder="例：毎日少しずつ成長中！"></textarea></div>
+          <button class="btn btn-primary" type="submit">プロフィールを保存</button>
+        </div>
+      </form>
+      <p class="post-note" style="margin-top:12px">※このプロフィールは今使っているブラウザー内に保存される試作品です。本名・学校名・住所・連絡先などは入力しないでね。</p>
+    </section>
+
     <section class="card social-card" aria-labelledby="communityHeading">
       <div class="section-head"><h2 id="communityHeading">🌱 成長フィード</h2><span class="tag">SNS PREVIEW</span></div>
       <p class="notice">頑張ったことや小さな一歩をシェアする場所。大きな成果じゃなくてもOK！</p>
@@ -185,6 +229,11 @@
 
     <footer>Grow. Ver.2 SNS画面の試作品 · 投稿はこのブラウザー内に保存されます</footer>
   </main>
+  <nav class="bottom-nav" aria-label="メインナビゲーション">
+    <button class="nav-item" type="button" data-tab="home" aria-current="page"><span class="nav-icon">🏠</span><span>ホーム</span></button>
+    <button class="nav-item" type="button" data-tab="feed"><span class="nav-icon">🌱</span><span>フィード</span></button>
+    <button class="nav-item" type="button" data-tab="profile"><span class="nav-icon">👤</span><span>プロフィール</span></button>
+  </nav>
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 <script>
 (() => {
@@ -326,7 +375,36 @@
     }
   }
 
-  // SNS feed preview: local browser only, not shared with other users.
+  // Profile and SNS feed are saved only in this browser for the prototype.
+  const PROFILE_KEY = 'grow-ver2-profile-v1';
+  const defaultProfile = { name: 'Grow.メンバー', emoji: '🌱', bio: '自分のペースで成長中！' };
+  let profile = loadProfile();
+  function loadProfile(){
+    try { const saved = localStorage.getItem(PROFILE_KEY); return saved ? { ...defaultProfile, ...JSON.parse(saved) } : { ...defaultProfile }; }
+    catch(e){ return { ...defaultProfile }; }
+  }
+  function saveProfile(){ try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch(e) {} }
+  function renderProfile(){
+    $('profileName').value = profile.name === 'Grow.メンバー' ? '' : profile.name;
+    $('profileEmoji').value = profile.emoji || '🌱';
+    $('profileBio').value = profile.bio || '';
+    $('profilePreviewAvatar').textContent = profile.emoji || '🌱';
+    $('profilePreviewName').textContent = profile.name || 'Grow.メンバー';
+    $('profilePreviewBio').textContent = profile.bio || '自己紹介はまだありません';
+  }
+  $('profileForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    profile.name = $('profileName').value.trim().slice(0,20) || 'Grow.メンバー';
+    profile.emoji = $('profileEmoji').value || '🌱';
+    profile.bio = $('profileBio').value.trim().slice(0,80);
+    saveProfile();
+    renderProfile();
+    feed.forEach(post => { if(post.mine){ post.name = profile.name; post.emoji = profile.emoji; } });
+    saveFeed();
+    renderFeed();
+    showToast('プロフィールを保存したよ！');
+  });
+
   const FEED_KEY = 'grow-ver2-local-feed-v1';
   const starterPosts = [
     { id: 'sample-1', name: 'みどり', emoji: '🌿', text: '今日は宿題を始める前に、机の上を5分だけ片づけた！小さいけど一歩前進。', tag: '生活', cheers: 2, mine: false },
@@ -371,10 +449,33 @@
     event.preventDefault();
     const text = $('postInput').value.trim();
     if(!text){ showToast('投稿する内容を入力してね'); return; }
-    feed.unshift({ id: 'post-' + Date.now(), name: 'あなた', emoji: '🌱', text, tag: '成長記録', cheers: 0, mine: true });
+    feed.unshift({ id: 'post-' + Date.now(), name: profile.name || 'Grow.メンバー', emoji: profile.emoji || '🌱', text, tag: '成長記録', cheers: 0, mine: true });
     saveFeed(); renderFeed(); $('postInput').value = ''; showToast('試作品に投稿したよ！');
   });
+  renderProfile();
   renderFeed();
+
+  // Bottom navigation switches between Home, Feed, and Profile screens.
+  const homeSections = [document.querySelector('.hero'), document.querySelector('.layout')];
+  const tabSections = {
+    home: homeSections,
+    feed: [document.querySelector('.social-card')],
+    profile: [document.querySelector('.profile-card')]
+  };
+  function setTab(tab) {
+    Object.entries(tabSections).forEach(([name, sections]) => {
+      sections.forEach(section => section.classList.toggle('tab-hidden', name !== tab));
+    });
+    document.querySelectorAll('.nav-item').forEach(button => {
+      if (button.dataset.tab === tab) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+  document.querySelectorAll('.nav-item').forEach(button => {
+    button.addEventListener('click', () => setTab(button.dataset.tab));
+  });
+  setTab('home');
 
   render();
 })();
